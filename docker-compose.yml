@@ -11,6 +11,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
+    depends_on:
+      - postgres
 
   metrics-gateway:
     image: prom/pushgateway
@@ -46,6 +48,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=secret
     links:
       - prometheus-server:prometheus
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:11.4
@@ -84,6 +88,8 @@ services:
       - PGPASSWORD=docker
       - SECRET_KEY=hello
       - WSGI_MODULE=hello.wsgi:application
+    depends_on:
+      - postgres
 
   load:
     build:
